@@ -16,9 +16,9 @@ class LoginPage extends Page {
         return $('#password');
     }
 
-    get btnLogin () {
-        return $('#login-button');
-    }
+    // get btnLogin () {
+    //     return $('#login-button');
+    // }
 
     /**
      * a method to encapsule automation code to interact with the page
@@ -28,14 +28,19 @@ class LoginPage extends Page {
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(password);
         await this.btnLogin.click();
+        await expect(browser).toHaveUrl(expect.stringContaining('inventory'))
     }
-
+    async getStarted(){
+        this.open()
+        this.login('standard_user', 'secret_sauce')
+    }
     /**
      * overwrite specific options to adapt it to page object
      */
-    open () {
-        return super.open('');
-    }
+    // open () {
+    //     return super.open();
+    // }
+    
 }
 
 export default new LoginPage();

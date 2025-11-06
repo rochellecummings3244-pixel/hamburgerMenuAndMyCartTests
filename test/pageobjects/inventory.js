@@ -8,9 +8,9 @@ class SecurePage extends Page {
     /**
      * define selectors using getter methods
      */
-    get errorMessage () {
-        return $('[data-test="error"]');
-    }
+    // get errorMessage () {
+    //     return $('[data-test="error"]');
+    // }
 }
 
 export default new SecurePage();
