@@ -10,16 +10,56 @@ class BurgerMenu extends Page {
         return $('#logout_sidebar_link');
     }
     get inventoryFullButton(){
-	return $('#inventory_sidebar_link'); 
+	    return $('#inventory_sidebar_link'); 
     }
     get aboutButton(){
-	return $('#about_sidebar_link'); 
+	    return $('#about_sidebar_link'); 
     }
     get resetCartButton(){
-	return $('#inventory_sidebar_link')
+	    return $('#inventory_sidebar_link')
     }
+    
+    async cartAmtIndicator(z) {
+    const cartBadge = await $x(`//a/span[text()='${z}']`);
+    
+        if (z === 0) {
+            const exists = await cartBadge.isExisting().toBe(false);
+            console.log("Cart is empty");
 
+        } 
+        else {
+            await expect(cartBadge).toBeDisplayed();
+        
+            const actualCount = await cartBadge.getText();
+            const actualNumber = parseInt(actualCount);
+            console.log(`Cart has ${z} items`);
+            return true;
+        }
+    }
+    //expect(actualNumber).toBe(z);
+    // async cartAmtIndicator(z){
+    //     const cartBadge = await $x(`//a/span[text()='${z}']`);
 
+    //     if(await cartBadge.isExisting()){
+    //      console.log(`cart has ${z} items`);
+    //      await expect(cartBadge).toBeDisplayed();
+    //      return cartBadge;
+    //     }
+    //     else{
+    //         console.log("cart is empty")
+    //         return true;
+    //     }
+        
+    
+    //}
+        
+    
+    // (){
+        
+        
+    //     //return $x('//a/span[text()="z"]')
+    // }
+    
 
     async hmLogout(){
         await $(this.burgerbutton).click();
