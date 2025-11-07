@@ -17,9 +17,15 @@ describe('Hamburger Test', () => {
     it('should log out completely', async () => {
         BurgerMenu.hmLogout
     })
-    it('inventory', async()=>{
+    it('inventory page redirect check', async()=> {
+        BurgerMenu.hmInventoryFullCheck
     })
-    
+    it('About button redirects to new webpage', async () => {
+        BurgerMenu.hmAboutRedirectLinkCheck
+    })
+    it('Reset Button resets the cart count', async () => {
+        BurgerMenu.hmResetCartCheck
+    })
         // await $('#react-burger-menu-btn').click();
         // await $('#logout_sidebar_link').click();
 
@@ -34,5 +40,5 @@ describe('Hamburger Test', () => {
         // //await expect(browser).toHaveUrl(expect.stringContaining('saucedemo.com'));
         // await expect(browser).not.toHaveUrl(expect.stringContaining('inventory'));
         // await expect($('#login-button')).toBeDisplayed();
-    })
+    //})
 })
