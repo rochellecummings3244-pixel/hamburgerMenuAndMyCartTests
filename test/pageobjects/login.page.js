@@ -34,12 +34,7 @@ class LoginPage extends Page {
         this.open()
         this.login('standard_user', 'secret_sauce')
     }
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    // open () {
-    //     return super.open();
-    // }
+    
     
 }
 

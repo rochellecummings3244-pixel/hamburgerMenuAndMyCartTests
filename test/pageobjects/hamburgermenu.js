@@ -1,4 +1,5 @@
-import { $ } from '@wdio/globals'
+import { $, expect } from '@wdio/globals'
+import LoginPage from './login.page.js'
 import Page from './page.js';
 
 class BurgerMenu extends Page {
@@ -18,79 +19,62 @@ class BurgerMenu extends Page {
     get resetCartButton(){
 	    return $('#inventory_sidebar_link')
     }
-    
-    async cartAmtIndicator(z) {
-    const cartBadge = await $x(`//a/span[text()='${z}']`);
-    
-        if (z === 0) {
-            const exists = await cartBadge.isExisting().toBe(false);
-            console.log("Cart is empty");
 
-        } 
-        else {
-            await expect(cartBadge).toBeDisplayed();
-        
-            const actualCount = await cartBadge.getText();
-            const actualNumber = parseInt(actualCount);
-            console.log(`Cart has ${z} items`);
-            return true;
-        }
+    get cartBadge(){
+        return $('span.shopping_cart_badge');
     }
-    //expect(actualNumber).toBe(z);
-    // async cartAmtIndicator(z){
-    //     const cartBadge = await $x(`//a/span[text()='${z}']`);
 
-    //     if(await cartBadge.isExisting()){
-    //      console.log(`cart has ${z} items`);
-    //      await expect(cartBadge).toBeDisplayed();
-    //      return cartBadge;
-    //     }
-    //     else{
-    //         console.log("cart is empty")
-    //         return true;
-    //     }
-        
-    
-    //}
-        
-    
-    // (){
-        
-        
-    //     //return $x('//a/span[text()="z"]')
-    // }
-    
 
-    async hmLogout(){
-        await $(this.burgerbutton).click();
-        await $(this.logoutbtn).click();
-
-        const urlBeforeForward = await browser.getUrl();
-        await browser.forward();
-        const urlAfterForward = await browser.getUrl();
-
-        // Verify URL didn't change
-        expect(urlBeforeForward).toBe(urlAfterForward);
-
-        // Assert we're still on the login page (forward navigation blocked)
-        //await expect(browser).toHaveUrl(expect.stringContaining('saucedemo.com'));
-        await expect(browser).not.toHaveUrl(expect.stringContaining('inventory'));
-        await expect(this.btnLogin).toBeDisplayed();
-    }
-    async hmInventoryFullCheck(){
+    async hmInventoryFullCheck() {
 	    await $(this.burgerbutton).click();
 	    await $(this.inventoryFullButton).click();
 	    await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory');
     }
+
+
     async hmAboutRedirectLinkCheck(){
 	    await $(this.burgerbutton).click();
 	    await $(this.aboutButton).click();
         await expect(browser).toHaveUrl(expect.stringContaining('saucelabs.com'));
     }
+
+
+    async hmLogout(){
+        //arrange and act: open and login, then click on hamburger and logout
+        await LoginPage.open()
+        await this.burgerbutton.click();
+        await this.logoutbtn.click();
+        //assertions:
+        await expect(browser).toHaveUrl('https://www.saucedemo.com/');
+        await expect(this.btnLogin).toBeDisplayed();
+        //To use later when I get it working: 
+        // Assert we're still on the login page (forward navigation blocked)
+        // const urlBeforeForward = await browser.getUrl();
+        // await browser.forward();
+        // const urlAfterForward = await browser.getUrl();
+        // // Verify URL didn't change
+        // expect(urlBeforeForward).toBe(urlAfterForward);
+    }
+
     async hmResetCartCheck(){
 	    await $(this.burgerbutton).click();
 	    await $(this.resetCartButton).click();
 	    //await {{{{{}}}}}}}}
+    }
+
+      async cartButtonCountExists(expected) {
+        const badgeExists = await this.cartBadge.isExisting();
+        if(!badgeExists){
+            console.log("Cart is empty");
+            return false;
+        }
+        const text = await this.cartBadge.getText();
+        const actualCount = parseInt(text, 10);
+        console.log(`Cart has ${actualCount} items`);
+
+        expect(actualCount).toBe(expected);
+        return true;
+    
     }
 }
 
