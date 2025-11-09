@@ -1,7 +1,7 @@
 import { expect } from '@wdio/globals'
 import LoginPage from '../pageobjects/loginPage.js'
 import InventoryPage from '../pageobjects/inventoryPage.js'
-import BurgerMenu from '../pageobjects/burgerStuff.js'
+import BurgerMenu from '../pageobjects/burgerMenu.js'
 
 
 describe('My Login application', () => {
