@@ -16,9 +16,9 @@ class LoginPage extends Page {
         return $('#password');
     }
 
-    // get btnLogin () {
-    //     return $('#login-button');
-    // }
+    get btnLogin () {
+        return $('#login-button');
+    }
 
     /**
      * a method to encapsule automation code to interact with the page
@@ -30,7 +30,8 @@ class LoginPage extends Page {
         await this.btnLogin.click();
         await expect(browser).toHaveUrl(expect.stringContaining('inventory'))
     }
-    async getStarted(){
+
+    async getStarted() {
         this.open()
         this.login('standard_user', 'secret_sauce')
     }

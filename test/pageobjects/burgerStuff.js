@@ -1,5 +1,5 @@
 import { $, expect } from '@wdio/globals'
-import LoginPage from './login.page.js'
+import LoginPage from './loginPage.js'
 import Page from './page.js';
 
 class BurgerMenu extends Page {
@@ -26,22 +26,26 @@ class BurgerMenu extends Page {
 
 
     async hmInventoryFullCheck() {
-	    await $(this.burgerbutton).click();
-	    await $(this.inventoryFullButton).click();
-	    await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory');
+        //arrange and act: open and login, then click on hamburger and inventory full link
+	    await LoginPage.open();
+        await this.burgerbutton.click();
+	    await this.inventoryFullButton.click();
+        //assertions: has url with inventory at the end.
+	    await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory.html');
     }
 
 
-    async hmAboutRedirectLinkCheck(){
-	    await $(this.burgerbutton).click();
-	    await $(this.aboutButton).click();
+    async hmAboutRedirectLinkCheck() {
+        await LoginPage.open();
+	    await this.burgerbutton.click();
+	    await this.aboutButton.click();
         await expect(browser).toHaveUrl(expect.stringContaining('saucelabs.com'));
     }
 
 
     async hmLogout(){
         //arrange and act: open and login, then click on hamburger and logout
-        await LoginPage.open()
+        await LoginPage.open();
         await this.burgerbutton.click();
         await this.logoutbtn.click();
         //assertions:

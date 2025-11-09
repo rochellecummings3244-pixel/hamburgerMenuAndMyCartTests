@@ -1,8 +1,9 @@
 import { $ } from '@wdio/globals'
+import LoginPage from './loginPage.js'
 import Page from './page.js';
 
 
-class SecurePage extends Page {
+class InventoryPage extends Page {
     //Adding to cart buttons
     get addBackpackMainInvPageBtn(){
 	    return $('#add-to-cart-sauce-labs-backpack')
@@ -73,4 +74,4 @@ class SecurePage extends Page {
 
 }
 
-export default new SecurePage();
+export default new InventoryPage();

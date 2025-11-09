@@ -15,7 +15,5 @@ export default class Page {
     open () {
         return browser.url("https://www.saucedemo.com/")
     }
-     get btnLogin () {
-        return $('#login-button');
-    }
+    
 }
