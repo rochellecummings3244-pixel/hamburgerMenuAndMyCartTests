@@ -1,5 +1,4 @@
 import { $ } from '@wdio/globals'
-import LoginPage from './loginPage.js'
 import Page from './page.js';
 
 
@@ -22,6 +21,10 @@ class InventoryPage extends Page {
     }
     get addAllThingsTShirtMainInvPageBtn(){
 	    return $('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
+    }
+
+    get allInventoryItems() {
+        return $$('.inventory_item');
     }
 
     get itemsMainInvPage() {
@@ -55,34 +58,6 @@ class InventoryPage extends Page {
 	    return $('#remove-test.allthethings()-t-shirt-(red)')
     }
     
-    //Image selectors to go to individual item page, and the add/remove buttons on those pages
-    get backpackIndPageBtn(){
-	    return $('[alt="Sauce Labs Backpack"]')
-    }
-    get bikeLightIndPageBtn(){
-	    return $('[alt="Sauce Labs Bike Light"]')
-    }
-    get boltTShirtIndPageBtn(){
-	    return $('[alt=”Sauce Labs Bolt T-Shirt”]')
-    }
-    get fleeceJacketIndPageBtn(){
-	    return $('[alt=”Sauce Labs Fleece Jacket”]')
-    }
-    get onesieIndPageBtn(){
-	    return $('[alt=”Sauce Labs Onesie”]')
-    }
-    get allThingsTShirtIndPageBtn(){
-	    return $('[alt="Test.allTheThings() T-Shirt (Red)"]')
-    }
-    get addToCartBtn(){
-	    return $('#add-to-cart')
-    }
-    get removeBtn(){
-	    return $('#remove')
-    }
-
-    
-
 
 }
 
