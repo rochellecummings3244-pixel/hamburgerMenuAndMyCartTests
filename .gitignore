@@ -1,0 +1,50 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Test artifacts
+test/reports/
+test/screenshots/
+test/output/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Runtime files
+.pids
+*.pid
+*.seed
+*.pid.lock
+*.log
+
+# Editor/IDE
+.vscode/
+.idea/
+.history/
+
+# OS files (macOS/Windows)
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+
+# Misc
+node_modules/
+jspm_packages/
+*.tgz
+*.zip
+*.pem
+*.key
