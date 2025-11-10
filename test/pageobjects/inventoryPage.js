@@ -21,8 +21,20 @@ class InventoryPage extends Page {
 	    return $('#add-to-cart-sauce-labs-onesie')
     }
     get addAllThingsTShirtMainInvPageBtn(){
-	    return $('#add-to-cart-test.allthethings()-t-shirt-(red)')
+	    return $('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
     }
+
+    get itemsMainInvPage() {
+        return [
+            this.addBackpackMainInvPageBtn, 
+            this.addBikeLightMainInvPageBtn, 
+            this.addBoltTShirtMainInvPageBtn,
+            this.addFleeceJacketMainInvPageBtn, 
+            this.addOnesieMainInvPageBtn,
+            this.addAllThingsTShirtMainInvPageBtn
+        ];
+    }
+
     //removing from cart selectors: 
     get removeBackpackIndPageBtn(){
 	    return $('#remove-sauce-labs-backpack')

@@ -1,6 +1,8 @@
 import { $, expect } from '@wdio/globals'
 import LoginPage from './loginPage.js'
+import InventoryPage from './inventoryPage.js'
 import Page from './page.js';
+import loginPage from './loginPage.js';
 
 class BurgerMenu extends Page {
     
@@ -17,40 +19,57 @@ class BurgerMenu extends Page {
 	    return $('#about_sidebar_link'); 
     }
     get resetCartButton(){
-	    return $('#inventory_sidebar_link')
+	    return $('#reset_sidebar_link')
     }
 
     get cartBadge(){
         return $('span.shopping_cart_badge');
     }
 
+    get sauceLabsLogo(){
+        return $('[alt=Saucelabs]')
+    }
 
     async hmInventoryFullCheck() {
         //arrange and act: open and login, then click on hamburger and inventory full link
-	    await LoginPage.open();
+	    await LoginPage.getStarted();
         await this.burgerbutton.click();
 	    await this.inventoryFullButton.click();
         //assertions: has url with inventory at the end.
 	    await expect(browser).toHaveUrl('https://www.saucedemo.com/inventory.html');
+
     }
-
-
+    
     async hmAboutRedirectLinkCheck() {
-        await LoginPage.open();
+        //arrange and act: open and login, then click on hamburger and about link
+        await LoginPage.getStarted();
 	    await this.burgerbutton.click();
 	    await this.aboutButton.click();
-        await expect(browser).toHaveUrl(expect.stringContaining('saucelabs.com'));
+        await browser.waitUntil(async () => {
+            const url = await browser.getUrl();
+            const state = await browser.execute(() => document.readyState);
+            return url.includes('saucelabs.com') && state === 'complete';
+        }, {
+            timeout: 10000,
+            timeoutMsg: 'Expected page to load within 10s'
+        });
+       //await browser.pause(2000);
+        //assertions: has url with saucelabs.com
+        await expect(browser).toHaveUrl('https://saucelabs.com/');
+        //await expect(this.sauceLabsLogo).toBeDisplayed();
+        
+        //waitForDisplayed({ timeout: 5000 });
     }
 
 
     async hmLogout(){
         //arrange and act: open and login, then click on hamburger and logout
-        await LoginPage.open();
+        await LoginPage.getStarted();
         await this.burgerbutton.click();
         await this.logoutbtn.click();
-        //assertions:
+        //assertions: logs out to the login page
         await expect(browser).toHaveUrl('https://www.saucedemo.com/');
-        await expect(this.btnLogin).toBeDisplayed();
+        await expect(LoginPage.btnLogin).toBeDisplayed();
         //To use later when I get it working: 
         // Assert we're still on the login page (forward navigation blocked)
         // const urlBeforeForward = await browser.getUrl();
@@ -60,26 +79,42 @@ class BurgerMenu extends Page {
         // expect(urlBeforeForward).toBe(urlAfterForward);
     }
 
-    async hmResetCartCheck(){
-	    await $(this.burgerbutton).click();
-	    await $(this.resetCartButton).click();
-	    //await {{{{{}}}}}}}}
-    }
-
-      async cartButtonCountExists(expected) {
-        const badgeExists = await this.cartBadge.isExisting();
-        if(!badgeExists){
-            console.log("Cart is empty");
-            return false;
+    async hmResetCartCheck() {
+        //arrange and act: open and login, add items to cart
+        await LoginPage.getStarted();
+         for (const item of InventoryPage.itemsMainInvPage) {
+            await item.click();
         }
-        const text = await this.cartBadge.getText();
-        const actualCount = parseInt(text, 10);
-        console.log(`Cart has ${actualCount} items`);
+        //assertions: cart count badge says 6
+        const badgeTextBeforeReset = await this.cartBadge.getText();
+        const actualCountBeforeReset = parseInt(badgeTextBeforeReset, 10);
+        await expect(actualCountBeforeReset).toBe(6);
+        console.log(`Cart has ${actualCountBeforeReset} items before reset`);
+        //act: open hamburger and click reset button
+	    await this.burgerbutton.click();
+	    await this.resetCartButton.click();
+        // await browser.pause(2000); // pauses for to allow UI to update
+	    //assertions: cart count badge does not exist
+        const badgeExists = await this.cartBadge?.isExisting() ?? false;
+        await expect(badgeExists).toBe(false);    
+        console.log("Cart has been reset successfully");
 
-        expect(actualCount).toBe(expected);
-        return true;
-    
     }
 }
+    //   async cartButtonCountExists(expected) {
+    //     const badgeExists = await this.cartBadge.isExisting();
+    //     if(!badgeExists){
+    //         console.log("Cart is empty");
+    //         return false;
+    //     }
+    //     const text = await this.cartBadge.getText();
+    //     const actualCount = parseInt(text, 10);
+    //     console.log(`Cart has ${actualCount} items`);
+
+    //     expect(actualCount).toBe(expected);
+    //     return true;
+    
+    // }
+
 
 export default new BurgerMenu();
