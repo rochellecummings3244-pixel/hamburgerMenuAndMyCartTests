@@ -154,6 +154,18 @@ class InventoryPage extends Page {
             this.allThingsTShirtIndPageBtn
         ];
     }
+    
+    get cartItemLinks(){
+        return [
+            $('#item_0_title_link'),
+            $('#item_1_title_link'),
+            $('#item_2_title_link'),
+            $('#item_3_title_link'),
+            $('#item_4_title_link'),
+            $('#item_5_title_link')
+        ]
+    }
+
     async returnShoppingTest(){
         //arrange and act: login, open cart page, and click return to shopping
         await LoginPage.getStarted();
@@ -177,6 +189,28 @@ class InventoryPage extends Page {
         await this.checkoutBtn.click();
         //assertion: returns to inventory page
         await expect(browser).toHaveUrl('https://www.saucedemo.com/checkout-step-one.html');
+    }
+    async checkItemLinksTest(){
+        //arrange and act: login, add items, go to cart, open each item's page from cart
+        await LoginPage.getStarted();
+        for (const item of this.itemsMainInvPage) {
+            await item.click();
+        }
+        const badgeText = await this.cartBadge.getText();
+        const actualCount = parseInt(badgeText, 10);
+        await expect(actualCount).toBe(this.itemsMainInvPage.length);
+        console.log(`Cart has ${actualCount} items`);
+        await this.cartBtn.click();
+
+        for (const itemLink of this.cartItemLinks) {
+            const itemID = await itemLink.getAttribute('id');
+            await itemLink.click();
+            //assertion: URL contains item's id
+            const urlItemId = new URL(await browser.getUrl()).searchParams.get('id');
+            await expect(itemID).toContain(urlItemId);
+            //go back to cart page
+            await this.cartBtn.click();
+        }
     }
 }
 
