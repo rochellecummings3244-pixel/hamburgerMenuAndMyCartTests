@@ -29,6 +29,10 @@ class BurgerMenu extends Page {
     get sauceLabsLogo(){
         return $('[alt=Saucelabs]')
     }
+    get searchbutton(){
+        return $('[alt=search]');
+
+    }
 
     async hmInventoryFullCheck() {
         //arrange and act: open and login, then click on hamburger and inventory full link
@@ -44,8 +48,11 @@ class BurgerMenu extends Page {
         //arrange and act: open and login, then click on hamburger and about link
         await LoginPage.getStarted();
 	    await this.burgerbutton.click();
+        await browser.pause(1200);
 	    await this.aboutButton.click();
+        await browser.pause(1200);
         await browser.waitUntil(async () => {
+            await expect (this.searchbutton).toBeDisplayed();
             const url = await browser.getUrl();
             const state = await browser.execute(() => document.readyState);
             return url.includes('saucelabs.com') && state === 'complete';
@@ -101,20 +108,7 @@ class BurgerMenu extends Page {
 
     }
 }
-    //   async cartButtonCountExists(expected) {
-    //     const badgeExists = await this.cartBadge.isExisting();
-    //     if(!badgeExists){
-    //         console.log("Cart is empty");
-    //         return false;
-    //     }
-    //     const text = await this.cartBadge.getText();
-    //     const actualCount = parseInt(text, 10);
-    //     console.log(`Cart has ${actualCount} items`);
-
-    //     expect(actualCount).toBe(expected);
-    //     return true;
     
-    // }
 
 
 export default new BurgerMenu();
